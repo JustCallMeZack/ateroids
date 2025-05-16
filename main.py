@@ -2,6 +2,7 @@
 # the open-source pygame library
 # throughout this file
 import pygame
+import sys
 
 from constants import *
 from player import *
@@ -38,9 +39,12 @@ def main():
 
 
 
-        
+        # container methods
         updatable.update(dt)
-
+        for thing in asteroids:
+            if thing.collision(player):
+                print("Game Over!")
+                sys.exit()
         for entity in drawable:
             entity.draw(screen)
 
@@ -48,9 +52,6 @@ def main():
 
         pygame.display.flip()
         dt = game_clock.tick(60)/1000
-
-
-
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
