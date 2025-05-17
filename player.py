@@ -7,6 +7,7 @@ class Player(CircleShape):
         self.rotation = 0
         self.timer = 0
         self.PLAYER_SHOOT_COOLDOWN = 0
+        self.score = 0
 
 
 
@@ -54,4 +55,4 @@ class Player(CircleShape):
             shot.velocity = shot.velocity.rotate(self.rotation)
             shot.velocity *= PLAYER_SHOOT_SPEED
 
-        
+ 
