@@ -172,3 +172,9 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+
+#custom file extension for checklist/task list
+
+.todo 
+feature_ideas.todo
