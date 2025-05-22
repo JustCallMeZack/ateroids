@@ -30,21 +30,11 @@ class Asteroid(CircleShape):
         
     
     def draw(self,screen):
-        # pygame.draw.circle(screen,"white",self.position,self.radius,2)
-
         pygame.draw.polygon(screen,"white",self.coord_list,2)
-        
-
-
-
 
     def update(self,dt):
 
-        #debug
-        coord_diff = self.position - self.coord_list[1]
-        
-
-        #wrap around logic
+# ===============Wrap Logic=======================
         sx, sy = self.position
         if -61 > sx:
             self.set_pos(SCREEN_WIDTH + 60,sy)
@@ -62,10 +52,13 @@ class Asteroid(CircleShape):
             self.set_pos(sx,-60)
             self.position += (self.velocity * dt)
             self.new_poly_coords()
+# ===============Update Pos=======================
         else:
             self.position += (self.velocity * dt)
             self.new_poly_coords()
-        print(f"Coord Diff: {coord_diff}   Pos: {self.position}")
+
+
+
 
     def new_poly_coords(self): #create new list of coordinates for pygame draw polygon
         new_coord_list = []
@@ -76,11 +69,10 @@ class Asteroid(CircleShape):
             new_coord_list.append((nx,ny))
         self.coord_list = new_coord_list
 
-    def split(self, player,score):
+    def split(self, player):
         new_type = self.type - 1
         self.kill()
         player.add_score(2)
-        score.update(player.get_score())
         if self.radius <= ASTEROID_MIN_RADIUS:
             return
         random_angle = random.uniform(20,50)

@@ -8,6 +8,8 @@ class Player(CircleShape):
         self.timer = 0
         self.PLAYER_SHOOT_COOLDOWN = 0
         self.score = 0
+        self.life = 3
+        self.immunity = 0
 
 
 
@@ -39,6 +41,7 @@ class Player(CircleShape):
         if keys[pygame.K_SPACE]:
             self.shoot()
         self.PLAYER_SHOOT_COOLDOWN -= dt
+        self.immunity -= dt
         
     def move(self, dt):
         forward = pygame.Vector2(0,1).rotate(self.rotation)
@@ -54,5 +57,20 @@ class Player(CircleShape):
             shot.velocity = pygame.Vector2(0,1)
             shot.velocity = shot.velocity.rotate(self.rotation)
             shot.velocity *= PLAYER_SHOOT_SPEED
+
+
+    
+    def del_life(self):
+        self.life -= 1
+        self.immunity = 5
+    
+    def add_life(self):
+        self.life += 1 
+    def get_score(self):
+        return self.score
+    def get_life(self):
+        return self.life
+
+
 
  

@@ -37,7 +37,7 @@ class AsteroidField(pygame.sprite.Sprite):
         if self.max >= 1:
             asteroid = Asteroid(position.x, position.y, radius, kind - 1)
             asteroid.velocity = velocity
-            self.max -= 1
+
 
     def update(self, dt):
         self.spawn_timer += dt
