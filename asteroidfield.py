@@ -31,10 +31,13 @@ class AsteroidField(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self, self.containers)
         self.spawn_timer = 0.0
+        self.max = 1
 
     def spawn(self, radius, position, velocity, kind):
-        asteroid = Asteroid(position.x, position.y, radius, kind - 1)
-        asteroid.velocity = velocity
+        if self.max >= 1:
+            asteroid = Asteroid(position.x, position.y, radius, kind - 1)
+            asteroid.velocity = velocity
+            self.max -= 1
 
     def update(self, dt):
         self.spawn_timer += dt

@@ -10,21 +10,24 @@ class Asteroid(CircleShape):
         super().__init__(x,y,radius)
         self.coord_list = []
         self.type = kind
-        self.new_coord_list()
+        self.init_coord_list()
         
 
 
 
 
-    def new_coord_list(self):
+    def init_coord_list(self):
         self.coord_list = []
+        self.__offset_coord_list = []
         calc_min_angle = (math.pi * 2) / ASTEROID_STEPS[self.type]
         px, py = self.position
         for i in range(0,ASTEROID_STEPS[self.type]):
             random_modifier =  random.uniform(-ASTEROID_RANDOMNESS[self.type], ASTEROID_RANDOMNESS[self.type])
             new_radius = self.radius - random_modifier
             theta = i * calc_min_angle
+            self.__offset_coord_list.append(((math.cos(theta) * new_radius),(math.sin(theta) * new_radius)))
             self.coord_list.append(((math.cos(theta) * new_radius) + px,(math.sin(theta) * new_radius) + py))
+        
     
     def draw(self,screen):
         # pygame.draw.circle(screen,"white",self.position,self.radius,2)
@@ -35,19 +38,43 @@ class Asteroid(CircleShape):
 
 
 
-
     def update(self,dt):
-        self.position += (self.velocity * dt)
+
+        #debug
+        coord_diff = self.position - self.coord_list[1]
+        
+
+        #wrap around logic
+        sx, sy = self.position
+        if -61 > sx:
+            self.set_pos(SCREEN_WIDTH + 60,sy)
+            self.position += (self.velocity * dt)
+            self.new_poly_coords()
+        elif sx > SCREEN_WIDTH + 61:
+            self.set_pos(-60,sy)
+            self.position += (self.velocity * dt)
+            self.new_poly_coords()
+        elif -61 > sy:
+            self.set_pos(sx,SCREEN_HEIGHT + 60)
+            self.position += (self.velocity * dt)
+            self.new_poly_coords()
+        elif sy > SCREEN_HEIGHT + 61:
+            self.set_pos(sx,-60)
+            self.position += (self.velocity * dt)
+            self.new_poly_coords()
+        else:
+            self.position += (self.velocity * dt)
+            self.new_poly_coords()
+        print(f"Coord Diff: {coord_diff}   Pos: {self.position}")
+
+    def new_poly_coords(self): #create new list of coordinates for pygame draw polygon
         new_coord_list = []
-        for point in self.coord_list:
+        for point in self.__offset_coord_list:
             px, py = point 
-            vx, vy = self.velocity
-            new_px = px + (vx * dt)
-            new_py = py + (vy * dt)
-            new_coord_list.append((new_px,new_py))
+            sx, sy = self.position
+            nx, ny = (sx + px), (sy + py)
+            new_coord_list.append((nx,ny))
         self.coord_list = new_coord_list
-
-
 
     def split(self, player,score):
         new_type = self.type - 1

@@ -35,6 +35,9 @@ class CircleShape(pygame.sprite.Sprite):
         
     def get_score(self):
         return self.score    
+    
+    def set_pos(self,x,y):
+        self.position = pygame.Vector2(x,y)
 
 class Shot(CircleShape):
     def __init__(self,x,y,radius):
